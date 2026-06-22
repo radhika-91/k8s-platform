@@ -34,7 +34,7 @@ apply-root-app:
 		./bootstrap/scripts/apply-root-app.sh
 
 configure-repo:
-	@test -n "$(GIT_REPO_URL)" || (echo "ERROR: set GIT_REPO_URL=https://github.com/your-org/k8s-platform.git"; exit 1)
+	@test -n "$(GIT_REPO_URL)" || (echo "ERROR: set GIT_REPO_URL=https://github.com/radhika-91/k8s-platform.git"; exit 1)
 	@echo "Updating repo URL to $(GIT_REPO_URL)..."
 	@find apps clusters cicd/argocd/applications -type f \( -name '*.yaml' -o -name '*.yaml.tpl' \) -print0 | \
 		xargs -0 sed -i.bak "s|https://github.com/YOUR_ORG/k8s-platform.git|$(GIT_REPO_URL)|g"
