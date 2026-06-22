@@ -1,0 +1,11 @@
+# Production defaults placeholder — enable features per cluster config.
+
+features:
+  certManager:
+    enabled: true
+  externalSecrets:
+    enabled: true
+  observability:
+    enabled: true
+  policy:
+    enabled: true

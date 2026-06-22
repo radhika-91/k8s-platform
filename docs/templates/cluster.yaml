@@ -1,0 +1,26 @@
+# Copy to clusters/<your-cluster-name>/cluster.yaml and customize.
+
+git:
+  repoURL: https://github.com/YOUR_ORG/k8s-platform.git
+  revision: HEAD
+
+cluster:
+  name: CHANGE_ME
+  environment: kind
+  domain: local.dev
+
+features:
+  argocd:
+    enabled: true
+  storage:
+    enabled: false
+  ingress:
+    enabled: false
+  certManager:
+    enabled: false
+  externalSecrets:
+    enabled: false
+  observability:
+    enabled: false
+  policy:
+    enabled: false

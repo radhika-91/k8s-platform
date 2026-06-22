@@ -1,0 +1,7 @@
+# Kind-friendly shared defaults (cluster.yaml still controls what deploys).
+
+features:
+  storage:
+    enabled: true
+  ingress:
+    enabled: true

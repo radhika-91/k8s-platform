@@ -1,0 +1,19 @@
+kube-prometheus-stack:
+  fullnameOverride: observability
+  defaultRules:
+    create: true
+  alertmanager:
+    enabled: false
+  grafana:
+    enabled: true
+    defaultDashboardsEnabled: true
+  prometheus:
+    prometheusSpec:
+      retention: 2d
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi

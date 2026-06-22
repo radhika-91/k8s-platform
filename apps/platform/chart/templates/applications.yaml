@@ -1,0 +1,50 @@
+{{/*
+Expand featureDefinitions into Argo CD Application manifests for enabled features.
+Cluster values file (clusters/<name>/cluster.yaml) provides .Values.features and .Values.cluster.
+*/}}
+{{- range $key, $def := .Values.featureDefinitions }}
+{{- $feature := index $.Values.features $key | default dict }}
+{{- if $feature.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $.Values.cluster.name }}-{{ $def.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ $def.syncWave | quote }}
+  labels:
+    platform.feature: {{ $key }}
+    platform.cluster: {{ $.Values.cluster.name }}
+spec:
+  project: platform
+  source:
+    repoURL: {{ $.Values.git.repoURL | quote }}
+    targetRevision: {{ $.Values.git.revision | quote }}
+    path: {{ $def.path }}
+    helm:
+      valueFiles:
+        - values.yaml
+        - ../../../environments/base/features.yaml
+        {{- if $.Values.cluster.environment }}
+        - ../../../environments/{{ $.Values.cluster.environment }}/features.yaml
+        - values-{{ $.Values.cluster.environment }}.yaml
+        {{- end }}
+      {{- with $feature.values }}
+      values: |
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ $def.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+{{- end }}
+{{- end }}

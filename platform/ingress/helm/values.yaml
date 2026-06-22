@@ -1,0 +1,9 @@
+ingress-nginx:
+  controller:
+    ingressClassResource:
+      name: nginx
+      default: true
+    service:
+      type: ClusterIP
+    metrics:
+      enabled: false

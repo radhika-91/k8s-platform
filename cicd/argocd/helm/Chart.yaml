@@ -1,0 +1,11 @@
+apiVersion: v2
+name: argocd-platform
+description: Wrapper chart for upstream Argo CD with platform defaults
+type: application
+version: 0.1.0
+appVersion: "3.4.4"
+
+dependencies:
+  - name: argo-cd
+    version: "9.6.0"
+    repository: https://argoproj.github.io/argo-helm

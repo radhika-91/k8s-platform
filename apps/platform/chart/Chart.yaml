@@ -1,0 +1,5 @@
+apiVersion: v2
+name: platform-apps
+description: Generates Argo CD Applications for enabled platform features
+type: application
+version: 0.1.0

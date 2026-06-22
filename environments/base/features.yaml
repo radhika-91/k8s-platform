@@ -1,0 +1,16 @@
+# Safe defaults: all optional platform features disabled.
+# Cluster-level cluster.yaml toggles override these at deploy time.
+
+features:
+  storage:
+    enabled: false
+  ingress:
+    enabled: false
+  certManager:
+    enabled: false
+  externalSecrets:
+    enabled: false
+  observability:
+    enabled: false
+  policy:
+    enabled: false

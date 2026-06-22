@@ -1,0 +1,18 @@
+cert-manager:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# Example ClusterIssuer for Kind testing (enable when feature is toggled on).
+# Uncomment in cluster.yaml under features.certManager.values when ready.
+# extraManifests:
+#   - apiVersion: cert-manager.io/v1
+#     kind: ClusterIssuer
+#     metadata:
+#       name: selfsigned
+#     spec:
+#       selfSigned: {}

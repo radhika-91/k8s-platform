@@ -1,0 +1,48 @@
+argo-cd:
+  fullnameOverride: argocd
+
+  global:
+    domain: argocd.local.dev
+
+  configs:
+    params:
+      # Required for ApplicationSet goTemplate mode
+      applicationsetcontroller.enable.git.submodule: "false"
+      applicationsetcontroller.enable.new.git.file.globbing: "true"
+
+    cm:
+      application.instanceLabelKey: argocd.argoproj.io/instance
+      resource.customizations.ignoreResourceUpdates.ConfigMap: |
+        jqPathExpressions:
+          - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
+          - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
+
+    rbac:
+      policy.default: role:readonly
+      policy.csv: |
+        g, argocd-admins, role:admin
+        p, role:admin, applications, *, */*, allow
+        p, role:admin, clusters, *, *, allow
+        p, role:admin, repositories, *, *, allow
+        p, role:admin, projects, *, *, allow
+
+  server:
+    replicas: 1
+    ingress:
+      enabled: false
+
+  controller:
+    replicas: 1
+
+  repoServer:
+    replicas: 1
+
+  applicationSet:
+    enabled: true
+    replicas: 1
+
+  notifications:
+    enabled: false
+
+  dex:
+    enabled: false

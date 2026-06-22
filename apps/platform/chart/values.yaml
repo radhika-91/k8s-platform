@@ -1,0 +1,38 @@
+git:
+  repoURL: https://github.com/YOUR_ORG/k8s-platform.git
+  revision: HEAD
+
+# Feature metadata — toggles live in clusters/<name>/cluster.yaml
+featureDefinitions:
+  storage:
+    name: storage
+    path: platform/storage/helm
+    namespace: local-path-storage
+    syncWave: "1"
+  ingress:
+    name: ingress
+    path: platform/ingress/helm
+    namespace: ingress-nginx
+    syncWave: "2"
+  certManager:
+    name: cert-manager
+    path: platform/cert-manager/helm
+    namespace: cert-manager
+    syncWave: "3"
+  externalSecrets:
+    name: external-secrets
+    path: platform/external-secrets/helm
+    namespace: external-secrets
+    syncWave: "4"
+  observability:
+    name: observability
+    path: platform/observability/helm
+    namespace: observability
+    syncWave: "5"
+  policy:
+    name: policy
+    path: platform/policy/helm
+    namespace: kyverno
+    syncWave: "6"
+
+features: {}

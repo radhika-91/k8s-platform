@@ -1,0 +1,25 @@
+# Helm
+**/charts/*.tgz
+**/.helm/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Secrets (never commit)
+*.key
+*.pem
+secrets/
+.env
+.env.*
+
+# Kind / local
+.kube/
+kind-config-local.yaml
+
+# Build artifacts
+dist/
+tmp/

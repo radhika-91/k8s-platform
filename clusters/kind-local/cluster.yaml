@@ -1,0 +1,24 @@
+git:
+  repoURL: https://github.com/YOUR_ORG/k8s-platform.git
+  revision: HEAD
+
+cluster:
+  name: kind-local
+  environment: kind
+  domain: local.dev
+
+features:
+  argocd:
+    enabled: true
+  storage:
+    enabled: true
+  ingress:
+    enabled: true
+  certManager:
+    enabled: false
+  externalSecrets:
+    enabled: false
+  observability:
+    enabled: false
+  policy:
+    enabled: false

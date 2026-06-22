@@ -1,0 +1,10 @@
+apiVersion: v2
+name: platform-policy
+description: Policy engine wrapper (Kyverno)
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: kyverno
+    version: "3.3.7"
+    repository: https://kyverno.github.io/kyverno/
