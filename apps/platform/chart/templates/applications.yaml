@@ -1,6 +1,7 @@
 {{/*
 Expand featureDefinitions into Argo CD Application manifests for enabled features.
-Cluster values file (clusters/<name>/k8s-features.yaml) provides .Values.features and .Values.cluster.
+Cluster values file (clusters/<name>/k8s-features.yaml) provides .Values.features, .Values.cluster,
+and optional .Values.syncPolicy (cluster defaults). Per-feature syncPolicy overrides cluster defaults.
 Application CRs and workloads deploy to .Values.namespace (default: platform).
 */}}
 {{- $platformNs := .Values.namespace | default "platform" }}
@@ -42,11 +43,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: {{ $platformNs }}
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+{{ include "platform-apps.syncPolicySpec" (dict "clusterPolicy" ($.Values.syncPolicy | default dict) "featurePolicy" ($feature.syncPolicy | default dict)) | nindent 4 }}
 {{- end }}
 {{- end }}

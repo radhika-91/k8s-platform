@@ -11,3 +11,26 @@ clusters/kind-local/k8s-features.yaml  →  Application platform (platform ns)  
 ```
 
 There is no ApplicationSet — other clusters' configs in `clusters/` are ignored by each Argo CD instance.
+
+## Sync policy
+
+Cluster defaults in `k8s-features.yaml`:
+
+```yaml
+syncPolicy:
+  automated: true
+  prune: true
+  selfHeal: true
+```
+
+Per-feature override:
+
+```yaml
+features:
+  certManager:
+    enabled: true
+    syncPolicy:
+      automated: false
+```
+
+Feature-level keys override cluster-level defaults (see `templates/_helpers.tpl`).

@@ -5,6 +5,12 @@ git:
 # Namespace for platform Application CRs and their deployed workloads
 namespace: platform
 
+# Override per cluster in k8s-features.yaml; per-feature overrides under features.<name>.syncPolicy
+syncPolicy:
+  automated: true
+  prune: true
+  selfHeal: true
+
 # Feature metadata — toggles live in clusters/<name>/k8s-features.yaml
 featureDefinitions:
   storage:

@@ -10,6 +10,19 @@ cluster:
   environment: kind
   domain: local.dev
 
+# Argo CD sync behaviour for generated feature Applications (defaults shown).
+# Cluster-level syncPolicy applies to all features; override per feature under features.<name>.syncPolicy.
+# syncPolicy:
+#   automated: true
+#   prune: true
+#   selfHeal: true
+#
+# features:
+#   certManager:
+#     enabled: true
+#     syncPolicy:
+#       automated: false   # manual sync for this feature only
+
 features:
   argocd:
     enabled: true
