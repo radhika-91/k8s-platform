@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${CLUSTER_CONFIG}-platform
+  name: platform
   namespace: platform
   finalizers:
     - resources-finalizer.argocd.argoproj.io
