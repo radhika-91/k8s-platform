@@ -2,37 +2,34 @@ git:
   repoURL: https://github.com/radhika-91/k8s-platform.git
   revision: HEAD
 
+# Namespace for platform Application CRs and their deployed workloads
+namespace: platform
+
 # Feature metadata — toggles live in clusters/<name>/k8s-features.yaml
 featureDefinitions:
   storage:
     name: storage
     path: platform/storage/helm
-    namespace: local-path-storage
     syncWave: "1"
   externalSecrets:
     name: external-secrets
     path: platform/external-secrets/helm
-    namespace: external-secrets
     syncWave: "2"
   ingress:
     name: ingress
     path: platform/ingress/helm
-    namespace: ingress-nginx
     syncWave: "3"
   certManager:
     name: cert-manager
     path: platform/cert-manager/helm
-    namespace: cert-manager
     syncWave: "4"
   observability:
     name: observability
     path: platform/observability/helm
-    namespace: observability
     syncWave: "5"
   policy:
     name: policy
     path: platform/policy/helm
-    namespace: kyverno
     syncWave: "6"
 
 features: {}

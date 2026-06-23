@@ -7,6 +7,8 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   description: Platform infrastructure components (ingress, cert-manager, etc.)
+  sourceNamespaces:
+    - platform
   sourceRepos:
     - "*"
   destinations:

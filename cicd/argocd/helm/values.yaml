@@ -12,6 +12,9 @@ argo-cd:
           - '.metadata.annotations."cluster-autoscaler.kubernetes.io/last-updated"'
           - '.metadata.annotations."control-plane.alpha.kubernetes.io/leader"'
 
+    params:
+      application.namespaces: platform
+
     rbac:
       policy.default: role:readonly
       policy.csv: |

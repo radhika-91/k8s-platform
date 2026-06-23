@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ${CLUSTER_CONFIG}-platform
-  namespace: argocd
+  namespace: platform
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -16,7 +16,7 @@ spec:
         - ../../../clusters/${CLUSTER_CONFIG}/k8s-features.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: platform
   syncPolicy:
     automated:
       prune: true

@@ -20,7 +20,7 @@ else
   echo "==> Render platform application generator"
   helm template test apps/platform/chart \
     -f clusters/kind-local/k8s-features.yaml \
-    --namespace argocd >/dev/null
+    --namespace platform >/dev/null
 fi
 
 echo "==> YAML syntax check (yq or python)"

@@ -1,7 +1,9 @@
 {{/*
 Expand featureDefinitions into Argo CD Application manifests for enabled features.
 Cluster values file (clusters/<name>/k8s-features.yaml) provides .Values.features and .Values.cluster.
+Application CRs and workloads deploy to .Values.namespace (default: platform).
 */}}
+{{- $platformNs := .Values.namespace | default "platform" }}
 {{- range $key, $def := .Values.featureDefinitions }}
 {{- $feature := index $.Values.features $key | default dict }}
 {{- if $feature.enabled }}
@@ -10,7 +12,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ $.Values.cluster.name }}-{{ $def.name }}
-  namespace: argocd
+  namespace: {{ $platformNs }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -38,7 +40,7 @@ spec:
       {{- end }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: {{ $def.namespace }}
+    namespace: {{ $platformNs }}
   syncPolicy:
     automated:
       prune: true

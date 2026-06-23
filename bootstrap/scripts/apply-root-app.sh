@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 ARGOCD_NAMESPACE="${ARGOCD_NAMESPACE:-argocd}"
+PLATFORM_NAMESPACE="${PLATFORM_NAMESPACE:-platform}"
 CLUSTER_NAME="${CLUSTER_NAME:-k8s-platform}"
 CLUSTER_CONFIG="${CLUSTER_CONFIG:-kind-local}"
 GIT_REPO_URL="${GIT_REPO_URL:-}"
@@ -27,6 +28,9 @@ fi
 echo "Applying AppProjects..."
 kubectl apply -f "${REPO_ROOT}/cicd/argocd/config/appprojects/"
 
+echo "Ensuring namespace '${PLATFORM_NAMESPACE}' exists..."
+kubectl create namespace "${PLATFORM_NAMESPACE}" --dry-run=client -o yaml | kubectl apply -f -
+
 render_template() {
   local src="$1"
   sed \
@@ -43,4 +47,5 @@ echo "Applying Argo CD self-management Application..."
 render_template "${REPO_ROOT}/cicd/argocd/applications/argocd-self.yaml.tpl" | kubectl apply -f -
 
 echo "Applications applied. Check sync status:"
-echo "  kubectl get applications -n ${ARGOCD_NAMESPACE}"
+echo "  kubectl get applications -n ${PLATFORM_NAMESPACE}"
+echo "  kubectl get applications -n ${ARGOCD_NAMESPACE}   # argocd-config only"
