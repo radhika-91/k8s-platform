@@ -1,5 +1,5 @@
 # Safe defaults: all optional platform features disabled.
-# Cluster-level cluster.yaml toggles override these at deploy time.
+# Cluster-level k8s-features.yaml toggles override these at deploy time.
 
 features:
   storage:

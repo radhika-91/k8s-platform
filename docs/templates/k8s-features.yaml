@@ -1,9 +1,12 @@
+# Copy to clusters/<your-cluster-name>/k8s-features.yaml and customize.
+# Bootstrap that cluster with: make apply-root-app CLUSTER_CONFIG=<your-cluster-name>
+
 git:
   repoURL: https://github.com/YOUR_ORG/k8s-platform.git
   revision: HEAD
 
 cluster:
-  name: kind-local
+  name: CHANGE_ME
   environment: kind
   domain: local.dev
 
@@ -11,9 +14,9 @@ features:
   argocd:
     enabled: true
   storage:
-    enabled: true
+    enabled: false
   ingress:
-    enabled: true
+    enabled: false
   certManager:
     enabled: false
   externalSecrets:

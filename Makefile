@@ -1,6 +1,7 @@
 .PHONY: help kind-up kind-down bootstrap apply-root-app configure-repo argocd-password argocd-ui lint helm-deps clean
 
 CLUSTER_NAME ?= k8s-platform
+CLUSTER_CONFIG ?= kind-local
 ENVIRONMENT  ?= kind
 ARGOCD_NS    ?= argocd
 GIT_REPO_URL ?=
@@ -12,7 +13,7 @@ help:
 	@echo "  make kind-up          Create Kind cluster"
 	@echo "  make kind-down        Delete Kind cluster"
 	@echo "  make bootstrap        Install Argo CD via Helm"
-	@echo "  make apply-root-app   Apply root Application (requires GIT_REPO_URL=...)"
+	@echo "  make apply-root-app   Apply platform Application (GIT_REPO_URL, CLUSTER_CONFIG=...)"
 	@echo "  make configure-repo   Replace YOUR_ORG repo URL across manifests (GIT_REPO_URL=...)"
 	@echo "  make argocd-password  Print Argo CD admin password"
 	@echo "  make argocd-ui        Port-forward Argo CD UI to localhost:8080"
@@ -30,11 +31,11 @@ bootstrap: helm-deps
 	@CLUSTER_NAME=$(CLUSTER_NAME) ENVIRONMENT=$(ENVIRONMENT) ./bootstrap/scripts/install-argocd.sh
 
 apply-root-app:
-	@CLUSTER_NAME=$(CLUSTER_NAME) GIT_REPO_URL=$(GIT_REPO_URL) GIT_REVISION=$(GIT_REVISION) \
+	@CLUSTER_NAME=$(CLUSTER_NAME) CLUSTER_CONFIG=$(CLUSTER_CONFIG) GIT_REPO_URL=$(GIT_REPO_URL) GIT_REVISION=$(GIT_REVISION) \
 		./bootstrap/scripts/apply-root-app.sh
 
 configure-repo:
-	@test -n "$(GIT_REPO_URL)" || (echo "ERROR: set GIT_REPO_URL=https://github.com/radhika-91/k8s-platform.git"; exit 1)
+	@test -n "$(GIT_REPO_URL)" || (echo "ERROR: set GIT_REPO_URL=https://github.com/YOUR_ORG/k8s-platform.git"; exit 1)
 	@echo "Updating repo URL to $(GIT_REPO_URL)..."
 	@find apps clusters cicd/argocd/applications -type f \( -name '*.yaml' -o -name '*.yaml.tpl' \) -print0 | \
 		xargs -0 sed -i.bak "s|https://github.com/YOUR_ORG/k8s-platform.git|$(GIT_REPO_URL)|g"

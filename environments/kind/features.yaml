@@ -1,4 +1,4 @@
-# Kind-friendly shared defaults (cluster.yaml still controls what deploys).
+# Kind-friendly shared defaults (k8s-features.yaml still controls what deploys).
 
 features:
   storage:

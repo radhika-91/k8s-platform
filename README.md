@@ -7,12 +7,13 @@ GitOps-driven Kubernetes platform management using **Argo CD**, **Helm**, and fe
 ```
 Bootstrap (once)          GitOps (ongoing)
 ─────────────────         ───────────────────────────────────
-make kind-up         →    Root Application
-make bootstrap       →      └─ ApplicationSet (per cluster)
-make apply-root-app  →           └─ Feature Applications (toggled)
+make kind-up         →    platform Application (this cluster only)
+make bootstrap       →      └─ Generator chart → Feature Applications
+make apply-root-app  →           └─ ingress, storage, ... (toggled)
 ```
 
-Each cluster declares enabled features in `clusters/<name>/cluster.yaml`. Disabled features are not deployed.
+One Argo CD instance per cluster. Each cluster bootstraps with `CLUSTER_CONFIG`
+pointing at its own `clusters/<name>/k8s-features.yaml` — it never reads other clusters' configs.
 
 ## Prerequisites
 
@@ -36,9 +37,9 @@ make kind-up
 # 2. Install Argo CD (Helm bootstrap)
 make bootstrap
 
-# 3. Push this repo to a Git remote, then apply root Application
+# 3. Push this repo to a Git remote, then bootstrap GitOps for this cluster
 export GIT_REPO_URL=https://github.com/YOUR_ORG/k8s-platform.git
-make apply-root-app
+make apply-root-app CLUSTER_CONFIG=kind-local
 
 # 4. Access Argo CD UI
 make argocd-password
@@ -47,7 +48,7 @@ make argocd-ui   # https://localhost:8080 (accept self-signed cert)
 
 ## Feature toggles
 
-Edit [`clusters/kind-local/cluster.yaml`](clusters/kind-local/cluster.yaml):
+Edit [`clusters/kind-local/k8s-features.yaml`](clusters/kind-local/k8s-features.yaml):
 
 ```yaml
 features:
@@ -74,7 +75,7 @@ Features deploy in waves: storage → ingress → cert-manager → external-secr
 | [`clusters/`](clusters/) | Per-cluster metadata and feature toggles |
 | [`docs/templates/`](docs/templates/) | Cluster config template for new clusters |
 | [`platform/`](platform/) | Wrapper Helm charts for each platform feature |
-| [`apps/`](apps/) | Argo CD ApplicationSet and application generator |
+| [`apps/`](apps/) | Platform generator chart and future workload apps |
 | [`environments/`](environments/) | Shared value layers (base / kind / prod) |
 
 ## Makefile targets
@@ -84,7 +85,7 @@ Features deploy in waves: storage → ingress → cert-manager → external-secr
 | `make kind-up` | Create Kind cluster |
 | `make kind-down` | Delete Kind cluster |
 | `make bootstrap` | Install Argo CD via Helm |
-| `make apply-root-app` | Apply root Application (`GIT_REPO_URL` required) |
+| `make apply-root-app` | Apply platform + argocd-config Applications (`GIT_REPO_URL`, `CLUSTER_CONFIG`) |
 | `make argocd-password` | Print admin password |
 | `make argocd-ui` | Port-forward UI to :8080 |
 | `make lint` | Helm lint + YAML validation |
@@ -100,11 +101,12 @@ Features deploy in waves: storage → ingress → cert-manager → external-secr
 
 ## Production path
 
-1. Add `clusters/prod-<cloud>/cluster.yaml` with production toggles
-2. Add cloud-specific value files (`values-eks.yaml`, etc.) under each feature
-3. Enable manual sync / sync windows for production
-4. Wire SOPS or External Secrets for repo credentials
-5. Restrict AppProjects and enable policy (Kyverno)
+1. Add `clusters/prod-<cloud>/k8s-features.yaml` with production toggles
+2. Bootstrap a **separate** Argo CD on that cluster with `CLUSTER_CONFIG=prod-<cloud>`
+3. Add cloud-specific value files (`values-eks.yaml`, etc.) under each feature
+4. Enable manual sync / sync windows for production
+5. Wire SOPS or External Secrets for repo credentials
+6. Restrict AppProjects and enable policy (Kyverno)
 
 ## Platform features
 

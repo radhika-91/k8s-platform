@@ -5,11 +5,6 @@ argo-cd:
     domain: argocd.local.dev
 
   configs:
-    params:
-      # Required for ApplicationSet goTemplate mode
-      applicationsetcontroller.enable.git.submodule: "false"
-      applicationsetcontroller.enable.new.git.file.globbing: "true"
-
     cm:
       application.instanceLabelKey: argocd.argoproj.io/instance
       resource.customizations.ignoreResourceUpdates.ConfigMap: |
@@ -38,8 +33,7 @@ argo-cd:
     replicas: 1
 
   applicationSet:
-    enabled: true
-    replicas: 1
+    enabled: false
 
   notifications:
     enabled: false

@@ -19,7 +19,7 @@ else
 
   echo "==> Render platform application generator"
   helm template test apps/platform/chart \
-    -f clusters/kind-local/cluster.yaml \
+    -f clusters/kind-local/k8s-features.yaml \
     --namespace argocd >/dev/null
 fi
 

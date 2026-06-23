@@ -1,5 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  - ../platform/applicationset.yaml
+# Reserved for future workload Application manifests (app-of-apps).
+# Platform features are managed by the cluster-scoped platform Application
+# applied at bootstrap — see cicd/argocd/applications/platform-application.yaml.tpl
+
+resources: []

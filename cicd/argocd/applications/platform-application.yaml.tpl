@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root
+  name: ${CLUSTER_CONFIG}-platform
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,10 @@ spec:
   source:
     repoURL: ${GIT_REPO_URL}
     targetRevision: ${GIT_REVISION}
-    path: apps/root
+    path: apps/platform/chart
+    helm:
+      valueFiles:
+        - ../../../clusters/${CLUSTER_CONFIG}/k8s-features.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
