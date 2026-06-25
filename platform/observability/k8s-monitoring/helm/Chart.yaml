@@ -1,0 +1,10 @@
+apiVersion: v2
+name: platform-observability-k8s-monitoring
+description: Grafana k8s-monitoring chart (Alloy collectors) wired to self-hosted LGTM
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: k8s-monitoring
+    version: "4.1.6"
+    repository: https://grafana.github.io/helm-charts

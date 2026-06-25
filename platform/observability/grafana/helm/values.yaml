@@ -1,0 +1,44 @@
+grafana:
+  fullnameOverride: observability-grafana
+  adminPassword: changeme
+  defaultDashboardsEnabled: true
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Mimir
+          uid: mimir
+          type: prometheus
+          url: http://observability-mimir-gateway/prometheus
+          isDefault: true
+          jsonData:
+            httpMethod: POST
+            prometheusType: Mimir
+        - name: Loki
+          uid: loki
+          type: loki
+          url: http://observability-loki:3100
+          isDefault: false
+        - name: Tempo
+          uid: tempo
+          type: tempo
+          url: http://observability-tempo:3200
+          isDefault: false
+          jsonData:
+            tracesToLogsV2:
+              datasourceUid: loki
+            lokiSearch:
+              datasourceUid: loki
+            tracesToMetrics:
+              datasourceUid: mimir
+            serviceMap:
+              datasourceUid: mimir
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi

@@ -64,7 +64,7 @@ Commit and push; Argo CD syncs only enabled features.
 
 ### Sync order
 
-Features deploy in waves: storage → ingress → cert-manager → external-secrets → observability → policy.
+Features deploy in waves: storage → ingress → cert-manager → external-secrets → observability backends (loki/mimir/tempo) → grafana + prometheus-operator-crds → k8s-monitoring or otel agents → policy.
 
 ## Repository layout
 
@@ -116,5 +116,11 @@ Features deploy in waves: storage → ingress → cert-manager → external-secr
 | ingress | ingress-nginx | enabled |
 | cert-manager | cert-manager | disabled |
 | external-secrets | external-secrets | disabled |
-| observability | kube-prometheus-stack | disabled |
+| observability-loki | `platform/observability/loki` | disabled |
+| observability-mimir | `platform/observability/mimir` | disabled |
+| observability-tempo | `platform/observability/tempo` | disabled |
+| observability-grafana | `platform/observability/grafana` | disabled |
+| observability-prometheus-operator-crds | `platform/observability/prometheus-operator-crds` — ServiceMonitor CRDs | disabled |
+| observability-k8s-monitoring | `platform/observability/k8s-monitoring` — Alloy via Grafana k8s-monitoring | disabled |
+| observability-otel | `platform/observability/otel` — direct OpenTelemetry Collector agents | disabled |
 | policy | kyverno | disabled |

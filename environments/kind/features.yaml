@@ -4,4 +4,4 @@ features:
   storage:
     enabled: true
   ingress:
-    enabled: true
+    enabled: false

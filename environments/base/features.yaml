@@ -10,7 +10,19 @@ features:
     enabled: false
   externalSecrets:
     enabled: false
-  observability:
+  observabilityLoki:
+    enabled: false
+  observabilityMimir:
+    enabled: false
+  observabilityTempo:
+    enabled: false
+  observabilityGrafana:
+    enabled: false
+  observabilityPrometheusOperatorCrds:
+    enabled: false
+  observabilityK8sMonitoring:
+    enabled: false
+  observabilityOtel:
     enabled: false
   policy:
     enabled: false

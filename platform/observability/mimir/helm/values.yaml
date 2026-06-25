@@ -1,0 +1,58 @@
+# Mimir (minimal distributed — use managed Mimir in production)
+mimir-distributed:
+  fullnameOverride: observability-mimir
+  kafka:
+    enabled: false
+  alertmanager:
+    enabled: false
+  minio:
+    enabled: true
+  ingester:
+    replicas: 1
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+  distributor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  query_frontend:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  compactor:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  store_gateway:
+    replicas: 1
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  rollout_operator:
+    enabled: false
+  continuous_test:
+    enabled: false
+  gateway:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 32Mi

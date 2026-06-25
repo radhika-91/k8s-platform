@@ -1,0 +1,6 @@
+tempo:
+  tempo:
+    retention: 12h
+  resources:
+    limits:
+      memory: 512Mi

@@ -1,0 +1,14 @@
+otel-logs:
+  resources:
+    limits:
+      memory: 192Mi
+
+otel-node-metrics:
+  resources:
+    limits:
+      memory: 192Mi
+
+otel-cluster-metrics:
+  resources:
+    limits:
+      memory: 192Mi

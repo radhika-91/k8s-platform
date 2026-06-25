@@ -1,0 +1,22 @@
+apiVersion: v2
+name: platform-observability-otel
+description: OpenTelemetry Collector telemetry agents (logs, node metrics, cluster metrics)
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: opentelemetry-collector
+    alias: otel-logs
+    version: "0.127.2"
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    condition: agents.logs.enabled
+  - name: opentelemetry-collector
+    alias: otel-node-metrics
+    version: "0.127.2"
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    condition: agents.nodeMetrics.enabled
+  - name: opentelemetry-collector
+    alias: otel-cluster-metrics
+    version: "0.127.2"
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    condition: agents.clusterMetrics.enabled

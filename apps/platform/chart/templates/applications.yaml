@@ -7,6 +7,11 @@ Application CRs and workloads deploy to .Values.namespace (default: platform).
 {{- $platformNs := .Values.namespace | default "platform" }}
 {{- range $key, $def := .Values.featureDefinitions }}
 {{- $feature := index $.Values.features $key | default dict }}
+{{- $chartDepth := len (splitList "/" $def.path) }}
+{{- $repoRootRel := "" }}
+{{- range until $chartDepth }}
+{{- $repoRootRel = printf "%s../" $repoRootRel }}
+{{- end }}
 {{- if $feature.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -30,9 +35,9 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../../environments/base/features.yaml
+        - {{ $repoRootRel }}environments/base/features.yaml
         {{- if $.Values.cluster.environment }}
-        - ../../../environments/{{ $.Values.cluster.environment }}/features.yaml
+        - {{ $repoRootRel }}environments/{{ $.Values.cluster.environment }}/features.yaml
         - values-{{ $.Values.cluster.environment }}.yaml
         {{- end }}
       {{- with $feature.values }}

@@ -29,13 +29,37 @@ featureDefinitions:
     name: cert-manager
     path: platform/cert-manager/helm
     syncWave: "4"
-  observability:
-    name: observability
-    path: platform/observability/helm
+  observabilityLoki:
+    name: observability-loki
+    path: platform/observability/loki/helm
     syncWave: "5"
+  observabilityMimir:
+    name: observability-mimir
+    path: platform/observability/mimir/helm
+    syncWave: "5"
+  observabilityTempo:
+    name: observability-tempo
+    path: platform/observability/tempo/helm
+    syncWave: "5"
+  observabilityGrafana:
+    name: observability-grafana
+    path: platform/observability/grafana/helm
+    syncWave: "6"
+  observabilityPrometheusOperatorCrds:
+    name: observability-prometheus-operator-crds
+    path: platform/observability/prometheus-operator-crds/helm
+    syncWave: "6"
+  observabilityK8sMonitoring:
+    name: observability-k8s-monitoring
+    path: platform/observability/k8s-monitoring/helm
+    syncWave: "7"
+  observabilityOtel:
+    name: observability-otel
+    path: platform/observability/otel/helm
+    syncWave: "8"
   policy:
     name: policy
     path: platform/policy/helm
-    syncWave: "6"
+    syncWave: "9"
 
 features: {}

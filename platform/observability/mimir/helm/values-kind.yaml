@@ -1,0 +1,7 @@
+mimir-distributed:
+  ingester:
+    persistentVolume:
+      size: 2Gi
+  minio:
+    persistence:
+      size: 2Gi

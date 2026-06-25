@@ -1,0 +1,58 @@
+# Grafana k8s-monitoring — Alloy-based collectors targeting in-cluster LGTM backends.
+# Requires observability-loki, observability-mimir, and observability-prometheus-operator-crds (wave 6).
+# Do not enable the same telemetry roles in observability-otel (duplicates data).
+# Override via features.observabilityK8sMonitoring.values.k8s-monitoring in k8s-features.yaml
+k8s-monitoring:
+  cluster:
+    name: k8s-platform
+
+  destinations:
+    mimir:
+      type: prometheus
+      url: http://observability-mimir-gateway/api/v1/push
+    loki:
+      type: loki
+      url: http://observability-loki:3100/loki/api/v1/push
+
+  # clusterMetrics enables kubelet, cAdvisor, kubeletResource, and kube-state-metrics scrapes
+  # (generated River config in upstream feature-cluster-metrics chart — tune via clusterMetrics.kubelet, .cadvisor, etc.)
+  clusterMetrics:
+    enabled: true
+    collector: alloy-metrics
+
+  podLogsViaLoki:
+    enabled: true
+    collector: alloy-logs
+
+  # Scrape app metrics from ServiceMonitor / PodMonitor CRs (requires prometheus-operator-crds chart)
+  prometheusOperatorObjects:
+    enabled: true
+    collector: alloy-metrics
+    serviceMonitors:
+      enabled: true
+      namespaces: []
+    podMonitors:
+      enabled: true
+      namespaces: []
+    probes:
+      enabled: true
+    scrapeConfigs:
+      enabled: false
+
+  hostMetrics:
+    enabled: false
+
+  collectors:
+    alloy-metrics:
+      presets: [clustered, statefulset]
+    alloy-logs:
+      presets: [filesystem-log-reader, daemonset]
+
+  telemetryServices:
+    kube-state-metrics:
+      deploy: true
+    node-exporter:
+      deploy: false
+
+  alloy-operator:
+    deploy: true

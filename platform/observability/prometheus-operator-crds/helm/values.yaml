@@ -1,0 +1,26 @@
+# Cluster-scoped CRDs — install before observability-k8s-monitoring (sync wave 6 vs 7).
+# Does not deploy the Prometheus Operator controller or a Prometheus server.
+# Override via features.observabilityPrometheusOperatorCrds.values.prometheus-operator-crds
+prometheus-operator-crds:
+  crds:
+    servicemonitors:
+      enabled: true
+    podmonitors:
+      enabled: true
+    probes:
+      enabled: true
+    scrapeconfigs:
+      enabled: true
+    prometheusrules:
+      enabled: true
+    # Not required for Alloy + Mimir scraping path
+    prometheuses:
+      enabled: false
+    prometheusagents:
+      enabled: false
+    alertmanagers:
+      enabled: false
+    alertmanagerconfigs:
+      enabled: false
+    thanosrulers:
+      enabled: false

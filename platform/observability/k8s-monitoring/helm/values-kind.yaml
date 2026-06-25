@@ -1,0 +1,10 @@
+k8s-monitoring:
+  clusterMetrics:
+    enabled: true
+  podLogsViaLoki:
+    enabled: true
+  collectors:
+    alloy-metrics:
+      presets: [small, clustered, statefulset]
+    alloy-logs:
+      presets: [filesystem-log-reader, daemonset]

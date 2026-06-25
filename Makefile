@@ -1,9 +1,10 @@
-.PHONY: help kind-up kind-down bootstrap apply-root-app configure-repo argocd-password argocd-ui lint helm-deps clean
+.PHONY: help kind-up kind-down bootstrap apply-root-app configure-repo argocd-password argocd-ui grafana-ui lint helm-deps clean
 
 CLUSTER_NAME ?= k8s-platform
 CLUSTER_CONFIG ?= kind-local
 ENVIRONMENT  ?= kind
 ARGOCD_NS    ?= argocd
+PLATFORM_NS  ?= platform
 GIT_REPO_URL ?=
 GIT_REVISION ?= HEAD
 
@@ -17,6 +18,7 @@ help:
 	@echo "  make configure-repo   Replace YOUR_ORG repo URL across manifests (GIT_REPO_URL=...)"
 	@echo "  make argocd-password  Print Argo CD admin password"
 	@echo "  make argocd-ui        Port-forward Argo CD UI to localhost:8080"
+	@echo "  make grafana-ui       Port-forward Grafana to localhost:3000"
 	@echo "  make helm-deps        Update Helm chart dependencies"
 	@echo "  make lint             Lint Helm charts and validate YAML"
 	@echo "  make clean            Remove Helm dependency archives"
@@ -48,6 +50,9 @@ argocd-password:
 
 argocd-ui:
 	@kubectl -n $(ARGOCD_NS) port-forward svc/argocd-server 8080:443
+
+grafana-ui:
+	@kubectl -n $(PLATFORM_NS) port-forward svc/observability-grafana 3000:80
 
 helm-deps:
 	@find . -name Chart.yaml -not -path './lib/*' | while read -r chart; do \

@@ -1,0 +1,95 @@
+# OpenTelemetry Collector agents — alternative to observability-k8s-monitoring (Alloy).
+# Requires observability-loki and observability-mimir in the same namespace.
+# Enable observabilityK8sMonitoring OR observabilityOtel, not both for the same telemetry.
+agents:
+  logs:
+    enabled: true
+  clusterMetrics:
+    enabled: true
+  nodeMetrics:
+    enabled: true
+
+# --- Agent: logs (DaemonSet) ---
+otel-logs:
+  fullnameOverride: observability-agent-logs-otel
+  image:
+    repository: otel/opentelemetry-collector-contrib
+  mode: daemonset
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    logsCollection:
+      enabled: true
+      includeCollectorLogs: false
+  config:
+    exporters:
+      loki:
+        endpoint: http://observability-loki:3100/loki/api/v1/push
+    service:
+      pipelines:
+        logs:
+          exporters: [loki]
+  resources:
+    requests:
+      cpu: 30m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+# --- Agent: node metrics (DaemonSet) ---
+otel-node-metrics:
+  fullnameOverride: observability-agent-node-metrics-otel
+  image:
+    repository: otel/opentelemetry-collector-contrib
+  mode: daemonset
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    kubeletMetrics:
+      enabled: true
+    hostMetrics:
+      enabled: true
+  config:
+    exporters:
+      prometheusremotewrite/mimir:
+        endpoint: http://observability-mimir-gateway/api/v1/push
+    service:
+      pipelines:
+        metrics:
+          exporters: [prometheusremotewrite/mimir]
+  resources:
+    requests:
+      cpu: 30m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+# --- Agent: cluster metrics (Deployment) ---
+otel-cluster-metrics:
+  fullnameOverride: observability-agent-cluster-metrics-otel
+  image:
+    repository: otel/opentelemetry-collector-contrib
+  mode: deployment
+  replicaCount: 1
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    clusterMetrics:
+      enabled: true
+  config:
+    exporters:
+      prometheusremotewrite/mimir:
+        endpoint: http://observability-mimir-gateway/api/v1/push
+    service:
+      pipelines:
+        metrics:
+          exporters: [prometheusremotewrite/mimir]
+  resources:
+    requests:
+      cpu: 30m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
