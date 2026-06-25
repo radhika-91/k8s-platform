@@ -1,7 +1,64 @@
+# Kind: classic Mimir (no Kafka), optional components off, minimal requests.
 mimir-distributed:
+  kafka:
+    enabled: false
+  mimir:
+    structuredConfig:
+      ingest_storage:
+        enabled: false
+      ingester:
+        push_grpc_method_enabled: true
+  ruler:
+    enabled: false
+  overrides_exporter:
+    enabled: false
+  query_scheduler:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
   ingester:
     persistentVolume:
       size: 2Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+  distributor:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  querier:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  query_frontend:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  compactor:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  store_gateway:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+  gateway:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 32Mi
   minio:
     persistence:
       size: 2Gi
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi

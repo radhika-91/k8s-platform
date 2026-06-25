@@ -1,5 +1,16 @@
+# Kind: single-binary Loki only — no caches or canary (saves RAM on local clusters).
 loki:
+  chunksCache:
+    enabled: false
+  resultsCache:
+    enabled: false
+  lokiCanary:
+    enabled: false
   singleBinary:
     resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
       limits:
+        cpu: 200m
         memory: 512Mi
